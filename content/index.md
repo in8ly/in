@@ -34,7 +34,7 @@ title: "Resonance Intelligence"
     Hover to preview, click to read fully. The connections show relationships between ideas.</em>
   </p>
 </div>
-<div class="garden-container"></div>
+<div class="garden-container" style="min-height: 600px; position: relative; border: 1px dashed rgba(0,0,0,0.1);"></div>
 <div class="entry-points">
   <h2>Starting Points</h2>
   <div class="entry-grid">
@@ -108,8 +108,13 @@ title: "Resonance Intelligence"
 // Resonance Garden - Interactive visualization
 class ResonanceGarden {
   constructor() {
+    console.log('Initializing ResonanceGarden...');
     this.container = document.querySelector('.garden-container');
-    if (!this.container) return;
+    if (!this.container) {
+      console.error('Garden container not found!');
+      return;
+    }
+    console.log('Garden container found:', this.container);
     
     this.notes = [];
     this.connections = [];
@@ -137,8 +142,10 @@ class ResonanceGarden {
   
   async loadGardenData() {
     try {
+      console.log('Loading garden data...');
       const response = await fetch('/static/contentIndex.json');
       const data = await response.json();
+      console.log('Data loaded:', data);
       
       this.notes = Object.entries(data).map(([path, note], index) => {
         const pathParts = path.split('/');

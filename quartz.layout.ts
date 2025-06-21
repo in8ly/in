@@ -43,27 +43,20 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Explorer({
       title: "Explore the Garden",
       folderClickBehavior: "link",
-      folderDefaultState: "closed",
+      folderDefaultState: "collapsed",
+    }),
+  ],
+  center: [
+    Component.Content(),
+    Component.ConditionalRender({
+      component: Component.Graph(),
+      condition: (page) => page.fileData.slug === "index",
     }),
   ],
   right: [
     Component.RecentNotes({
       title: "Related Notes",
       limit: 5
-    }),
-    Component.Graph({
-      localGraph: {
-        drag: true,
-        zoom: true,
-        depth: 2,
-        scale: 1.1,
-        repelForce: 0.8,
-      },
-      globalGraph: {
-        drag: true,
-        zoom: true,
-        depth: -1,
-      },
     }),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
@@ -72,7 +65,7 @@ export const defaultContentPageLayout: PageLayout = {
 
 // components for pages that display lists of pages  (e.g. tags or folders)
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.Breadcrumbs(), Component.PageTitle(), Component.ContentMeta()],
+  beforeBody: [Component.Breadcrumbs(), Component.PageTitle(), Component.ContentMeta(), Component.ArticleTitle()],
   left: [
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
@@ -87,13 +80,8 @@ export const defaultListPageLayout: PageLayout = {
     Component.Explorer({
       title: "Explore the Garden",
       folderClickBehavior: "link",
-      folderDefaultState: "closed",
+      folderDefaultState: "collapsed",
     }),
   ],
-  right: [
-    Component.RecentNotes({
-      title: "Related Notes",
-      limit: 5
-    }),
-  ],
+  right: [],
 }
