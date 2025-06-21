@@ -20,6 +20,8 @@ const config: QuartzConfig = {
     ignorePatterns: ["private", ".obsidian"],
     defaultDateType: "created",
     theme: {
+      cdnCaching: true,
+      fontOrigin: "googleFonts",
       typography: {
         header: "Lora, Georgia, serif",
         body: "'Atkinson Hyperlegible', sans-serif",
@@ -34,6 +36,8 @@ const config: QuartzConfig = {
           dark: "#272520",
           secondary: "#5c7f67",
           tertiary: "#a98467",
+          highlight: "rgba(143, 159, 169, 0.15)",
+          textHighlight: "#fff",
         },
         darkMode: {
           light: "#2b2a25",
@@ -43,6 +47,8 @@ const config: QuartzConfig = {
           dark: "#f1efe8",
           secondary: "#8aac96",
           tertiary: "#c4a78c",
+          highlight: "rgba(143, 159, 169, 0.15)",
+          textHighlight: "#fff",
         },
       },
     },
@@ -50,6 +56,7 @@ const config: QuartzConfig = {
   plugins: {
     transformers: [
       Plugin.FrontMatter(),
+      Plugin.Garden(),
       Plugin.TableOfContents(),
       Plugin.CreatedModifiedDate({
         priority: ["frontmatter", "filesystem"],
