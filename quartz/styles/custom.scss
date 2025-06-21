@@ -1,3 +1,303 @@
-@use "./base.scss";
+/* Garden CSS - Inspired by the Oil Painting */
+/* Extracted color palette from your artwork */
 
-// put your custom CSS here!
+:root {
+  /* Colors directly from the painting */
+  --painting-sage: #7a8b6f;        /* The dominant sage greens */
+  --painting-olive: #9ca077;        /* Warmer olive tones */
+  --painting-terracotta: #b8916d;   /* The warm rust/terracotta */
+  --painting-slate: #6b7a8a;        /* Cool blue-gray areas */
+  --painting-gold: #d4c082;         /* Golden yellow accents */
+  --painting-deep-purple: #5d4a52;  /* Deep purple-brown shadows */
+  --painting-bright-blue: #4a7b8c;  /* The brighter blue areas */
+}
+
+/* Visual garden elements */
+.garden-container {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  overflow: hidden;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, 
+    var(--painting-slate) 0%, 
+    var(--painting-sage) 30%, 
+    var(--painting-olive) 70%, 
+    var(--painting-terracotta) 100%);
+}
+
+/* Base elements for the garden */
+.branch {
+  position: absolute;
+  background: linear-gradient(45deg, 
+    var(--painting-sage), 
+    var(--painting-olive), 
+    var(--painting-terracotta));
+  height: 4px;
+  transform-origin: left center;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.leaf {
+  position: absolute;
+  width: 16px;
+  height: 26px;
+  background: radial-gradient(ellipse at center, 
+    var(--painting-gold) 20%, 
+    var(--painting-olive) 60%, 
+    var(--painting-sage) 100%);
+  border-radius: 50% 5% 50% 5%;
+  transform: rotate(45deg);
+  box-shadow: 0 3px 6px rgba(93, 74, 82, 0.3);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2;
+  
+  &:hover {
+    transform: rotate(45deg) scale(1.2);
+    filter: saturate(1.4) brightness(1.2);
+    background: radial-gradient(ellipse at center, 
+      var(--painting-gold) 30%, 
+      var(--painting-bright-blue) 70%, 
+      var(--painting-slate) 100%);
+    box-shadow: 0 5px 12px rgba(74, 123, 140, 0.4), 
+                0 0 20px rgba(212, 192, 130, 0.3);
+  }
+  
+  &.active {
+    background: radial-gradient(ellipse at center, 
+      var(--painting-gold) 40%, 
+      var(--painting-bright-blue) 80%);
+    transform: rotate(45deg) scale(1.3);
+    box-shadow: 0 6px 15px rgba(74, 123, 140, 0.5), 
+                0 0 25px rgba(212, 192, 130, 0.4);
+  }
+}
+
+.node {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    var(--painting-terracotta), 
+    var(--painting-deep-purple));
+  z-index: 3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--painting-gold);
+  
+  &:hover {
+    transform: scale(1.6);
+    background: radial-gradient(circle, 
+      var(--painting-gold), 
+      var(--painting-terracotta));
+    box-shadow: 0 0 15px rgba(212, 192, 130, 0.6);
+  }
+}
+
+/* Note preview with painting colors */
+.note-preview {
+  position: absolute;
+  width: 320px;
+  background: linear-gradient(135deg, 
+    var(--light) 0%, 
+    rgba(122, 139, 111, 0.05) 100%);
+  border: 2px solid var(--painting-terracotta);
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 10px 20px rgba(93, 74, 82, 0.2), 
+              0 0 30px rgba(212, 192, 130, 0.1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  h3 {
+    margin-top: 0;
+    font-family: var(--headerFont);
+    font-size: 1.2rem;
+    color: var(--painting-deep-purple);
+    border-bottom: 1px solid var(--painting-sage);
+    padding-bottom: 0.5rem;
+  }
+  
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--painting-slate);
+  }
+  
+  .tags .tag {
+    background: var(--painting-olive);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+  }
+}
+
+/* Connection lines with painting palette */
+.connection {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    rgba(122, 139, 111, 0.1), 
+    var(--painting-sage) 30%, 
+    var(--painting-terracotta) 70%, 
+    rgba(184, 145, 109, 0.1));
+  z-index: 0;
+  transform-origin: left center;
+  opacity: 0.6;
+}
+
+/* Enhanced animations */
+@keyframes leafSway {
+  0% { 
+    transform: rotate(45deg); 
+    filter: hue-rotate(0deg);
+  }
+  33% { 
+    transform: rotate(52deg); 
+    filter: hue-rotate(5deg);
+  }
+  66% { 
+    transform: rotate(38deg); 
+    filter: hue-rotate(-3deg);
+  }
+  100% { 
+    transform: rotate(45deg); 
+    filter: hue-rotate(0deg);
+  }
+}
+
+.leaf.animated {
+  animation: leafSway 4s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Painting-inspired quilt patches */
+.quilt-patch {
+  border: 2px solid var(--painting-terracotta);
+  border-radius: 3px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, 
+    var(--light) 0%, 
+    rgba(122, 139, 111, 0.03) 100%);
+  position: relative;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(45deg, 
+        transparent calc(50% - 1px), 
+        var(--painting-sage) calc(50% - 1px), 
+        var(--painting-sage) calc(50% + 1px), 
+        transparent calc(50% + 1px)),
+      linear-gradient(-45deg, 
+        transparent calc(50% - 1px), 
+        var(--painting-olive) calc(50% - 1px), 
+        var(--painting-olive) calc(50% + 1px), 
+        transparent calc(50% + 1px));
+    background-size: 25px 25px;
+    background-position: 0 0;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+}
+
+/* Thread elements with golden accents */
+.thread {
+  position: relative;
+  padding-left: 2.5rem;
+  margin: 1.5rem 0;
+  color: var(--painting-slate);
+  
+  &::before {
+    content: "🧵";
+    position: absolute;
+    left: 0;
+    top: 0;
+    filter: hue-rotate(45deg) saturate(1.2);
+  }
+}
+
+/* Painting-inspired background texture */
+body {
+  position: relative;
+  
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(122, 139, 111, 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(184, 145, 109, 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(74, 123, 140, 0.01) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+/* Entry cards with painting palette */
+.entry-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, 
+    var(--light) 0%, 
+    rgba(122, 139, 111, 0.02) 100%);
+  border: 1px solid var(--painting-sage);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(93, 74, 82, 0.15);
+    border-color: var(--painting-terracotta);
+    background: linear-gradient(135deg, 
+      var(--light) 0%, 
+      rgba(212, 192, 130, 0.05) 100%);
+  }
+  
+  h3 {
+    color: var(--painting-deep-purple);
+    border-bottom: 1px solid var(--painting-olive);
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .garden-container {
+    height: 60vh;
+  }
+  
+  .leaf {
+    width: 14px;
+    height: 22px;
+  }
+  
+  .note-preview {
+    width: 280px;
+  }
+}
