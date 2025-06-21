@@ -49,7 +49,20 @@ export const defaultContentPageLayout: PageLayout = {
   center: [
     Component.Content(),
     Component.ConditionalRender({
-      component: Component.Graph(),
+      component: Component.Graph({
+        localGraph: {
+          drag: true,
+          zoom: true,
+          depth: 2,
+          scale: 1.1,
+          repelForce: 0.8,
+        },
+        globalGraph: {
+          drag: true,
+          zoom: true,
+          depth: -1,
+        },
+      }),
       condition: (page) => page.fileData.slug === "index",
     }),
   ],
