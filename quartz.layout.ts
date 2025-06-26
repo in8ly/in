@@ -46,26 +46,6 @@ export const defaultContentPageLayout: PageLayout = {
       folderDefaultState: "collapsed",
     }),
   ],
-  center: [
-    Component.Content(),
-    Component.ConditionalRender({
-      component: Component.Graph({
-        localGraph: {
-          drag: true,
-          zoom: true,
-          depth: 2,
-          scale: 1.1,
-          repelForce: 0.8,
-        },
-        globalGraph: {
-          drag: true,
-          zoom: true,
-          depth: -1,
-        },
-      }),
-      condition: (page) => page.fileData.slug === "index",
-    }),
-  ],
   right: [
     Component.RecentNotes({
       title: "Related Notes",

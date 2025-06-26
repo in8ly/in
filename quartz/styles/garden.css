@@ -1,0 +1,157 @@
+/* Garden Visualization Styles */
+
+.garden-container {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  min-height: 600px;
+  margin: 2rem auto;
+  overflow: hidden;
+  background-color: rgba(245, 243, 240, 0.3); /* Light background */
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .garden-container {
+    background-color: rgba(43, 42, 37, 0.3); /* Dark background */
+  }
+}
+
+/* Node styling - central points */
+.node {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #a98467; /* Earthy tone */
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Branch styling - connecting elements */
+.branch {
+  position: absolute;
+  height: 2px;
+  transform-origin: left center;
+  background-color: #8c7864; /* Brown thread color */
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Connection styling - between related notes */
+.connection-svg {
+  z-index: 2;
+}
+
+/* Leaf styling - notes */
+.leaf {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.leaf:hover {
+  transform: translate(-50%, -50%) scale(1.1) !important;
+  filter: brightness(1.2);
+  z-index: 20;
+}
+
+/* Animation for leaves */
+.leaf.animated {
+  animation: sway 3s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes sway {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(5deg);
+  }
+}
+
+/* Note preview styling */
+.note-preview {
+  position: fixed;
+  width: 280px;
+  background-color: #f5f3f0;
+  color: #272520;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.note-preview.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.note-preview h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #5c7f67;
+}
+
+.note-preview p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.note-preview .tags {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.note-preview .tag {
+  font-size: 0.8rem;
+  background-color: rgba(169, 132, 103, 0.2);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  color: #5c7f67;
+}
+
+/* Dark mode adjustments for preview */
+@media (prefers-color-scheme: dark) {
+  .note-preview {
+    background-color: #2b2a25;
+    color: #f1efe8;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .note-preview .tag {
+    background-color: rgba(196, 167, 140, 0.2);
+    color: #8aac96;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .garden-container {
+    height: 70vh;
+  }
+  
+  .leaf {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .note-preview {
+    width: 220px;
+  }
+}

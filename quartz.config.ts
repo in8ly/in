@@ -18,7 +18,7 @@ const config: QuartzConfig = {
     
     // Ignore specific paths from your vault
     ignorePatterns: ["private", ".obsidian"],
-    defaultDateType: "created",
+    defaultDateType: "modified",
     theme: {
       cdnCaching: true,
       fontOrigin: "googleFonts",
@@ -59,7 +59,7 @@ const config: QuartzConfig = {
       Plugin.Garden(),
       Plugin.TableOfContents(),
       Plugin.CreatedModifiedDate({
-        priority: ["frontmatter", "filesystem"],
+        priority: ["frontmatter", "git", "filesystem"],
       }),
       Plugin.SyntaxHighlighting(),
       Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: true }),

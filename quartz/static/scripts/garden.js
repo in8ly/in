@@ -245,21 +245,53 @@ class ResonanceGarden {
       
       if (!source || !target) return;
       
-      const connEl = document.createElement('div');
-      connEl.className = 'connection';
+      // Use SVG for organic, thread-like connections
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.classList.add('connection-svg');
+      svg.style.position = 'absolute';
+      svg.style.width = '100%';
+      svg.style.height = '100%';
+      svg.style.top = '0';
+      svg.style.left = '0';
+      svg.style.pointerEvents = 'none';
       
+      // Create curved path
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      
+      // Calculate control points for curve
       const dx = target.x - source.x;
       const dy = target.y - source.y;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      const midX = (source.x + target.x) / 2;
+      const midY = (source.y + target.y) / 2;
       
-      connEl.style.width = `${length}px`;
-      connEl.style.left = `${source.x}px`;
-      connEl.style.top = `${source.y}px`;
-      connEl.style.transform = `rotate(${angle}deg)`;
-      connEl.style.opacity = connection.strength;
+      // Add some organic variation to the curve
+      const curveVariation = 30 + Math.random() * 30;
+      const ctrlX = midX + (Math.random() - 0.5) * curveVariation;
+      const ctrlY = midY + (Math.random() - 0.5) * curveVariation;
       
-      this.container.appendChild(connEl);
+      // Draw path
+      path.setAttribute('d', `M ${source.x} ${source.y} Q ${ctrlX} ${ctrlY} ${target.x} ${target.y}`);
+      path.setAttribute('fill', 'none');
+      
+      // Determine style based on connection type/strength
+      const strokeWidth = 1 + connection.strength * 2;
+      let strokeColor;
+      
+      // Different colors for different types of connections
+      if (connection.strength > 0.6) {
+        // Strong connection - thread-like
+        strokeColor = 'rgba(108, 86, 63, ' + connection.strength + ')';
+      } else {
+        // Weaker connection - more transparent
+        strokeColor = 'rgba(140, 120, 100, ' + connection.strength + ')';
+      }
+      
+      path.setAttribute('stroke', strokeColor);
+      path.setAttribute('stroke-width', strokeWidth);
+      path.setAttribute('stroke-dasharray', connection.strength > 0.5 ? '0' : '3,3');
+      
+      svg.appendChild(path);
+      this.container.appendChild(svg);
     });
     
     // Create leaves for each note
@@ -276,6 +308,17 @@ class ResonanceGarden {
       // Add random animation delay for subtle movement
       leaf.style.setProperty('--delay', `${Math.random() * 2}s`);
       leaf.classList.add('animated');
+      
+      // Determine image based on folder/tags
+      const imageIndex = this.getLeafImageIndex(note);
+      leaf.style.backgroundImage = `url('/static/garden-elements/leaf-${imageIndex}.png')`;
+      leaf.style.backgroundSize = 'contain';
+      leaf.style.backgroundRepeat = 'no-repeat';
+      leaf.style.backgroundPosition = 'center';
+      
+      // Randomize size slightly for organic feel
+      const sizeVar = 0.8 + Math.random() * 0.4; // 80-120% of base size
+      leaf.style.transform = `scale(${sizeVar}) rotate(${Math.random() * 360}deg)`;
       
       // Add event listeners
       leaf.addEventListener('click', this.handleLeafClick);
@@ -345,6 +388,45 @@ class ResonanceGarden {
     if (this.isInitialized) {
       this.renderGarden();
     }
+  }
+  
+  // Determine which leaf image to use based on note properties
+  getLeafImageIndex(note) {
+    // Map folders to specific image sets
+    const folderImageMap = {
+      'Conversations': [1, 2, 3], // Fabric scraps
+      'Insights': [4, 5, 6],      // Leaves
+      'Resources': [7, 8, 9],      // Paper fragments
+      'The Final Participation Project': [10, 11, 12] // Specialized elements
+    };
+    
+    // Map tags to specific images
+    const tagImageMap = {
+      'thestrangebirds': [13, 14],
+      'captainsimple': [15],
+      'ai-collaboration': [16, 17],
+      'knowing-field': [18, 19],
+      'backstory': [20, 21]
+    };
+    
+    // Check if note has a special tag that determines image
+    if (note.tags && note.tags.length > 0) {
+      for (const tag of note.tags) {
+        if (tagImageMap[tag]) {
+          const images = tagImageMap[tag];
+          return images[Math.floor(Math.random() * images.length)];
+        }
+      }
+    }
+    
+    // Otherwise use folder-based image
+    if (folderImageMap[note.folder]) {
+      const images = folderImageMap[note.folder];
+      return images[Math.floor(Math.random() * images.length)];
+    }
+    
+    // Default to generic images (1-3) if no matches
+    return Math.floor(Math.random() * 3) + 1;
   }
 }
 

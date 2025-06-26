@@ -12,7 +12,7 @@ export const Garden: QuartzTransformerPlugin = () => {
             contentType: "external",
           },
           {
-            src: "scripts/garden.js",
+            src: "/static/scripts/garden.js",
             loadTime: "afterDOMReady",
             contentType: "external",
           },
