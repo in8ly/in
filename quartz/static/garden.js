@@ -2,9 +2,15 @@
 
 class ResonanceGarden {
   constructor() {
+    console.log('🌱 ResonanceGarden constructor called');
     this.container = document.querySelector('.garden-container');
-    if (!this.container) return;
     
+    if (!this.container) {
+      console.error('❌ Garden container not found! Looking for .garden-container');
+      return;
+    }
+    
+    console.log('✅ Garden container found:', this.container);
     this.notes = [];
     this.connections = [];
     this.previewEl = null;
@@ -24,8 +30,12 @@ class ResonanceGarden {
     
     // Load data and initialize garden
     this.loadGardenData().then(() => {
+      console.log('🍃 Garden data loaded, notes count:', this.notes.length);
       this.renderGarden();
       this.isInitialized = true;
+      console.log('✨ Garden initialization complete');
+    }).catch(error => {
+      console.error('🚫 Garden initialization failed:', error);
     });
   }
   
@@ -350,10 +360,13 @@ class ResonanceGarden {
 
 // Initialize garden when the page is loaded
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('🌍 DOM loaded, looking for garden...');
   // Only initialize on pages with a garden container
-  const gardenContainer = document.querySelector('.garden-container');
-  if (gardenContainer) {
+  if (document.querySelector('.garden-container')) {
+    console.log('🌱 Starting garden initialization...');
     new ResonanceGarden();
+  } else {
+    console.log('📄 No garden container found on this page');
   }
 });
 

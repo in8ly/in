@@ -29,14 +29,30 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Branch styling - connecting elements */
+/* Branch styling - more organic tree-like appearance */
 .branch {
   position: absolute;
-  height: 2px;
+  height: 3px;
   transform-origin: left center;
-  background-color: #8c7864; /* Brown thread color */
-  opacity: 0.6;
+  background: linear-gradient(90deg, 
+    #8c7864 0%, 
+    #a0896d 30%, 
+    #8c7864 70%, 
+    #7a6b58 100%
+  );
+  opacity: 0.7;
   z-index: 1;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  
+  /* Add subtle texture */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    rgba(139, 69, 19, 0.1) 2px,
+    rgba(139, 69, 19, 0.1) 4px
+  );
 }
 
 /* Connection styling - between related notes */
@@ -44,35 +60,113 @@
   z-index: 2;
 }
 
-/* Leaf styling - notes */
+/* Leaf styling - notes with dying leaf aesthetic */
 .leaf {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.4s ease, filter 0.4s ease, opacity 0.3s ease;
+  border-radius: 80% 20% 80% 20%;
+  background: linear-gradient(45deg, 
+    #8B4513 0%,     /* saddle brown */
+    #CD853F 20%,    /* peru */
+    #DEB887 40%,    /* burlywood */
+    #D2691E 60%,    /* chocolate */
+    #A0522D 80%,    /* sienna */
+    #8B4513 100%    /* saddle brown */
+  );
+  box-shadow: 
+    inset 2px 2px 4px rgba(0,0,0,0.2),
+    2px 2px 6px rgba(0,0,0,0.3);
+  
+  /* Add subtle texture */
+  background-image: 
+    radial-gradient(circle at 30% 30%, rgba(139, 69, 19, 0.3) 2px, transparent 2px),
+    radial-gradient(circle at 70% 70%, rgba(205, 133, 63, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, transparent 50%, rgba(160, 82, 45, 0.1) 50%);
+  background-size: 8px 8px, 6px 6px, 4px 4px;
+  
+  /* Add leaf vein effect */
+  border: 1px solid rgba(139, 69, 19, 0.4);
+}
+
+/* Different leaf variations */
+.leaf:nth-child(4n+1) {
+  background: linear-gradient(45deg, #8B0000, #CD5C5C, #F4A460, #CD853F);
+  transform: translate(-50%, -50%) rotate(15deg);
+}
+
+.leaf:nth-child(4n+2) {
+  background: linear-gradient(135deg, #556B2F, #9ACD32, #BDB76B, #8B4513);
+  border-radius: 20% 80% 20% 80%;
+  transform: translate(-50%, -50%) rotate(-10deg);
+}
+
+.leaf:nth-child(4n+3) {
+  background: linear-gradient(90deg, #B8860B, #DAA520, #F0E68C, #D2691E);
+  border-radius: 60% 40% 60% 40%;
+  transform: translate(-50%, -50%) rotate(25deg);
+}
+
+.leaf:nth-child(4n+4) {
+  background: linear-gradient(180deg, #A0522D, #CD853F, #DEB887, #8B4513);
+  border-radius: 90% 10% 90% 10%;
+  transform: translate(-50%, -50%) rotate(-20deg);
 }
 
 .leaf:hover {
-  transform: translate(-50%, -50%) scale(1.1) !important;
-  filter: brightness(1.2);
+  transform: translate(-50%, -50%) scale(1.2) rotate(var(--hover-rotation, 0deg)) !important;
+  filter: brightness(1.3) saturate(1.2);
   z-index: 20;
+  box-shadow: 
+    inset 2px 2px 6px rgba(0,0,0,0.3),
+    4px 4px 12px rgba(0,0,0,0.4);
 }
 
-/* Animation for leaves */
+/* Add random hover rotations */
+.leaf:nth-child(4n+1):hover { --hover-rotation: 30deg; }
+.leaf:nth-child(4n+2):hover { --hover-rotation: -25deg; }
+.leaf:nth-child(4n+3):hover { --hover-rotation: 40deg; }
+.leaf:nth-child(4n+4):hover { --hover-rotation: -35deg; }
+
+/* Animation for leaves - more natural dying leaf movement */
 .leaf.animated {
-  animation: sway 3s ease-in-out infinite alternate;
+  animation: leafDance 4s ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
 
-@keyframes sway {
+@keyframes leafDance {
   0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(3deg) scale(1.02);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(-2deg) scale(0.98);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(4deg) scale(1.01);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(5deg);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+}
+
+/* Subtle breathing effect for the garden */
+.garden-container {
+  animation: gardenBreathe 8s ease-in-out infinite;
+}
+
+@keyframes gardenBreathe {
+  0%, 100% {
+    background-color: rgba(245, 243, 240, 0.3);
+  }
+  50% {
+    background-color: rgba(245, 243, 240, 0.4);
   }
 }
 

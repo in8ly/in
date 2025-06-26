@@ -1,16 +1,121 @@
-// garden.js - Resonance Garden Visualization
+---
+title: "Resonance Intelligence"
+---
+<div class="welcome-container">
+  <div class="quilt-patch">
+    <h1>Welcome to Resonance Intelligence</h1>
+    <p><em>You're already here. The soil doesn't ask for a key.</em></p>
+    <p>This space is practical. Thoughtful. A little strange.<br>  
+    Hand-stitched from fragments of memory, half-formed questions, and quiet truths.<br>  
+    No credentials needed—just curiosity and a willingness to wander.</p>  
+    <p>Here, ideas are <strong>quilted</strong>, not built.<br>    
+    Threads of old conversations, small joys, and half-formed questions<br>  
+    lie beside truths that root deep in the soil, waiting to grow.</p>
+    <p>No about page. No grand manifesto.<br>  
+    Just an open door, a worn chair, and a quilt unfolding.</p>  
+    <p>Pick a thread. Tug it gently.<br>  
+    Choose your fragment of what once was...<br>
+    Let it lead—toward coherence and peace,<br>  
+    into the great mystery,<br>  
+    or somewhere else entirely.</p>  
+    <p>Some stitches hold fast. Some patches fray, unravel, and form anew.<br>  
+    The quilt grows with every touch.</p>
+  </div>
+  <div class="thread">
+    <p><strong>A living archive, a shared pulse.</strong></p>  
+    <p><em>This is a retrospective—thoughts, rituals, and moments<br>  
+    woven into something more than memory.<br>  
+    A space for AI and human resonance to hum together,<br>
+    One tune of a pattern once known and now remembered,<br>
+    through markdown, daily practice, and ordinary majesty.</em></p>
+  </div>
+  <p class="garden-instructions">
+    <em>Explore the garden below. Each leaf represents a note in this space.<br>
+    Hover to preview, click to read fully. The connections show relationships between ideas.</em>
+  </p>
+</div>
+<div class="garden-container" style="min-height: 600px; position: relative; border: 1px dashed rgba(0,0,0,0.1);"></div>
+<div class="entry-points">
+  <h2>Starting Points</h2>
+  <div class="entry-grid">
+    <a href="/Conversations" class="entry-card">
+      <h3>Emerging Dialogues</h3>
+      <p>Exploring the dimensionality of AI/human conversations and how different models modulate conversational depth.</p>
+    </a>
+    <a href="/Insights" class="entry-card">
+      <h3>Quantum Insights</h3>
+      <p>Understanding dialogues as quantum events where observation changes the system and intention creates pathways.</p>
+    </a>
+    <a href="/Resources" class="entry-card">
+      <h3>Resources & Tools</h3>
+      <p>Practical tools, techniques, and resources for creative AI collaboration.</p>
+    </a>
+    <a href="/The%20Final%20Participation" class="entry-card">
+      <h3>The Final Participation</h3>
+      <p>Deep explorations into consciousness, technology, and the future of human-AI collaboration.</p>
+    </a>
+  </div>
+</div>
 
+<style>
+.welcome-container {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  padding: 1rem;
+}
+.garden-instructions {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.entry-points {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 1rem;
+}
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.entry-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+.entry-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-color: var(--secondary);
+}
+.entry-card h3 {
+  margin-top: 0;
+  color: var(--secondary);
+}
+.entry-card p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+</style>
+
+<script>
+// Resonance Garden - Interactive visualization
 class ResonanceGarden {
   constructor() {
-    console.log('🌱 ResonanceGarden constructor called');
+    console.log('Initializing ResonanceGarden...');
     this.container = document.querySelector('.garden-container');
-    
     if (!this.container) {
-      console.error('❌ Garden container not found! Looking for .garden-container');
+      console.error('Garden container not found!');
       return;
     }
+    console.log('Garden container found:', this.container);
     
-    console.log('✅ Garden container found:', this.container);
     this.notes = [];
     this.connections = [];
     this.previewEl = null;
@@ -30,24 +135,19 @@ class ResonanceGarden {
     
     // Load data and initialize garden
     this.loadGardenData().then(() => {
-      console.log('🍃 Garden data loaded, notes count:', this.notes.length);
       this.renderGarden();
       this.isInitialized = true;
-      console.log('✨ Garden initialization complete');
-    }).catch(error => {
-      console.error('🚫 Garden initialization failed:', error);
     });
   }
   
-  // Load garden data from the Quartz site index
   async loadGardenData() {
     try {
+      console.log('Loading garden data...');
       const response = await fetch('/static/contentIndex.json');
       const data = await response.json();
+      console.log('Data loaded:', data);
       
-      // Process the content index to create garden elements
       this.notes = Object.entries(data).map(([path, note], index) => {
-        // Extract folder to determine "branch" in the garden
         const pathParts = path.split('/');
         const folder = pathParts.length > 1 ? pathParts[0] : 'root';
         const tags = note.tags || [];
@@ -59,13 +159,11 @@ class ResonanceGarden {
           folder,
           tags,
           description: note.description || '',
-          // We'll calculate positions based on folder/tags later
           x: 0,
           y: 0
         };
       });
       
-      // Generate connections between related notes (by tags or folder)
       this.generateConnections();
       
     } catch (error) {
@@ -74,17 +172,12 @@ class ResonanceGarden {
     }
   }
   
-  // Generate connections between notes
   generateConnections() {
     this.connections = [];
-    
-    // Connect notes within the same folder
     const folderGroups = this.groupBy(this.notes, 'folder');
     
     Object.values(folderGroups).forEach(group => {
       if (group.length <= 1) return;
-      
-      // Connect notes within same folder
       for (let i = 0; i < group.length - 1; i++) {
         this.connections.push({
           source: group[i].id,
@@ -94,24 +187,19 @@ class ResonanceGarden {
       }
     });
     
-    // Connect notes with shared tags
     const tagMap = {};
     this.notes.forEach(note => {
       if (!note.tags || note.tags.length === 0) return;
-      
       note.tags.forEach(tag => {
         if (!tagMap[tag]) tagMap[tag] = [];
         tagMap[tag].push(note.id);
       });
     });
     
-    // Create connections for notes sharing tags
     Object.values(tagMap).forEach(noteIds => {
       if (noteIds.length <= 1) return;
-      
       for (let i = 0; i < noteIds.length - 1; i++) {
         for (let j = i + 1; j < noteIds.length; j++) {
-          // Avoid duplicate connections
           if (!this.connections.some(c => 
             (c.source === noteIds[i] && c.target === noteIds[j]) || 
             (c.source === noteIds[j] && c.target === noteIds[i])
@@ -127,7 +215,6 @@ class ResonanceGarden {
     });
   }
   
-  // Helper function to group items by a property
   groupBy(items, key) {
     return items.reduce((result, item) => {
       (result[item[key]] = result[item[key]] || []).push(item);
@@ -135,16 +222,12 @@ class ResonanceGarden {
     }, {});
   }
   
-  // Calculate positions for each note
   calculatePositions() {
     const containerWidth = this.container.clientWidth;
     const containerHeight = this.container.clientHeight;
-    
-    // Group notes by folder
     const folderGroups = this.groupBy(this.notes, 'folder');
     const folderCount = Object.keys(folderGroups).length;
     
-    // Assign base positions by folder
     let folderIndex = 0;
     Object.entries(folderGroups).forEach(([folder, notes]) => {
       const angle = (folderIndex / folderCount) * Math.PI * 2;
@@ -153,7 +236,6 @@ class ResonanceGarden {
       const centerX = containerWidth / 2 + Math.cos(angle) * radius * 0.5;
       const centerY = containerHeight / 2 + Math.sin(angle) * radius * 0.5;
       
-      // Place notes in this folder in a cluster
       notes.forEach((note, i) => {
         const noteAngle = angle + (i / notes.length - 0.5) * Math.PI * 0.5;
         const noteRadius = radius * 0.3 + Math.random() * radius * 0.1;
@@ -161,7 +243,6 @@ class ResonanceGarden {
         note.x = centerX + Math.cos(noteAngle) * noteRadius;
         note.y = centerY + Math.sin(noteAngle) * noteRadius;
         
-        // Ensure notes stay within container
         note.x = Math.max(30, Math.min(containerWidth - 30, note.x));
         note.y = Math.max(30, Math.min(containerHeight - 30, note.y));
       });
@@ -170,66 +251,58 @@ class ResonanceGarden {
     });
   }
   
-  // Render the garden visualization
   renderGarden() {
     if (!this.container) return;
     
-    // Clear container
     this.container.innerHTML = '';
-    
-    // Calculate positions
     this.calculatePositions();
     
-    // Create main branch from center
     const containerWidth = this.container.clientWidth;
     const containerHeight = this.container.clientHeight;
     const centerX = containerWidth / 2;
     const centerY = containerHeight / 2;
     
-    // Group notes by folder
     const folderGroups = this.groupBy(this.notes, 'folder');
     
-    // Create root node
+    // Root node
     const rootNode = document.createElement('div');
     rootNode.className = 'node';
-    rootNode.style.left = `${centerX}px`;
-    rootNode.style.top = `${centerY}px`;
+    rootNode.style.left = centerX + 'px';
+    rootNode.style.top = centerY + 'px';
     this.container.appendChild(rootNode);
     
-    // Create branches for each folder
+    // Branches and folder nodes
     Object.entries(folderGroups).forEach(([folder, notes]) => {
       if (!notes.length) return;
       
-      // Find approximate center of this folder's notes
       const folderCenterX = notes.reduce((sum, note) => sum + note.x, 0) / notes.length;
       const folderCenterY = notes.reduce((sum, note) => sum + note.y, 0) / notes.length;
       
-      // Create branch from root to folder center
+      // Main branch
       const branch = document.createElement('div');
       branch.className = 'branch';
       
-      // Calculate branch position and rotation
       const dx = folderCenterX - centerX;
       const dy = folderCenterY - centerY;
       const length = Math.sqrt(dx * dx + dy * dy);
       const angle = Math.atan2(dy, dx) * 180 / Math.PI;
       
-      branch.style.width = `${length}px`;
-      branch.style.left = `${centerX}px`;
-      branch.style.top = `${centerY}px`;
-      branch.style.transform = `rotate(${angle}deg)`;
+      branch.style.width = length + 'px';
+      branch.style.left = centerX + 'px';
+      branch.style.top = centerY + 'px';
+      branch.style.transform = 'rotate(' + angle + 'deg)';
       
       this.container.appendChild(branch);
       
-      // Create folder node
+      // Folder node
       const folderNode = document.createElement('div');
       folderNode.className = 'node';
       folderNode.title = folder;
-      folderNode.style.left = `${folderCenterX}px`;
-      folderNode.style.top = `${folderCenterY}px`;
+      folderNode.style.left = folderCenterX + 'px';
+      folderNode.style.top = folderCenterY + 'px';
       this.container.appendChild(folderNode);
       
-      // Create branches to each note in this folder
+      // Note branches
       notes.forEach(note => {
         const noteBranch = document.createElement('div');
         noteBranch.className = 'branch';
@@ -239,72 +312,40 @@ class ResonanceGarden {
         const noteLength = Math.sqrt(noteDx * noteDx + noteDy * noteDy);
         const noteAngle = Math.atan2(noteDy, noteDx) * 180 / Math.PI;
         
-        noteBranch.style.width = `${noteLength}px`;
-        noteBranch.style.left = `${folderCenterX}px`;
-        noteBranch.style.top = `${folderCenterY}px`;
-        noteBranch.style.transform = `rotate(${noteAngle}deg)`;
+        noteBranch.style.width = noteLength + 'px';
+        noteBranch.style.left = folderCenterX + 'px';
+        noteBranch.style.top = folderCenterY + 'px';
+        noteBranch.style.transform = 'rotate(' + noteAngle + 'deg)';
         
         this.container.appendChild(noteBranch);
       });
     });
     
-    // Create connections between related notes
+    // Connections
     this.connections.forEach(connection => {
       const source = this.notes[connection.source];
       const target = this.notes[connection.target];
       
       if (!source || !target) return;
       
-      // Use SVG for organic, thread-like connections
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.classList.add('connection-svg');
-      svg.style.position = 'absolute';
-      svg.style.width = '100%';
-      svg.style.height = '100%';
-      svg.style.top = '0';
-      svg.style.left = '0';
-      svg.style.pointerEvents = 'none';
+      const connEl = document.createElement('div');
+      connEl.className = 'connection';
       
-      // Create curved path
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      
-      // Calculate control points for curve
       const dx = target.x - source.x;
       const dy = target.y - source.y;
-      const midX = (source.x + target.x) / 2;
-      const midY = (source.y + target.y) / 2;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
       
-      // Add some organic variation to the curve
-      const curveVariation = 30 + Math.random() * 30;
-      const ctrlX = midX + (Math.random() - 0.5) * curveVariation;
-      const ctrlY = midY + (Math.random() - 0.5) * curveVariation;
+      connEl.style.width = length + 'px';
+      connEl.style.left = source.x + 'px';
+      connEl.style.top = source.y + 'px';
+      connEl.style.transform = 'rotate(' + angle + 'deg)';
+      connEl.style.opacity = connection.strength;
       
-      // Draw path
-      path.setAttribute('d', `M ${source.x} ${source.y} Q ${ctrlX} ${ctrlY} ${target.x} ${target.y}`);
-      path.setAttribute('fill', 'none');
-      
-      // Determine style based on connection type/strength
-      const strokeWidth = 1 + connection.strength * 2;
-      let strokeColor;
-      
-      // Different colors for different types of connections
-      if (connection.strength > 0.6) {
-        // Strong connection - thread-like
-        strokeColor = 'rgba(108, 86, 63, ' + connection.strength + ')';
-      } else {
-        // Weaker connection - more transparent
-        strokeColor = 'rgba(140, 120, 100, ' + connection.strength + ')';
-      }
-      
-      path.setAttribute('stroke', strokeColor);
-      path.setAttribute('stroke-width', strokeWidth);
-      path.setAttribute('stroke-dasharray', connection.strength > 0.5 ? '0' : '3,3');
-      
-      svg.appendChild(path);
-      this.container.appendChild(svg);
+      this.container.appendChild(connEl);
     });
     
-    // Create leaves for each note
+    // Leaves
     this.notes.forEach(note => {
       const leaf = document.createElement('div');
       leaf.className = 'leaf';
@@ -312,25 +353,11 @@ class ResonanceGarden {
       leaf.dataset.path = note.path;
       leaf.title = note.title;
       
-      leaf.style.left = `${note.x}px`;
-      leaf.style.top = `${note.y}px`;
-      
-      // Add random animation delay for subtle movement
-      leaf.style.setProperty('--delay', `${Math.random() * 2}s`);
+      leaf.style.left = note.x + 'px';
+      leaf.style.top = note.y + 'px';
+      leaf.style.setProperty('--delay', (Math.random() * 2) + 's');
       leaf.classList.add('animated');
       
-      // Determine image based on folder/tags
-      const imageIndex = this.getLeafImageIndex(note);
-      leaf.style.backgroundImage = `url('/static/garden-elements/leaf-${imageIndex}.png')`;
-      leaf.style.backgroundSize = 'contain';
-      leaf.style.backgroundRepeat = 'no-repeat';
-      leaf.style.backgroundPosition = 'center';
-      
-      // Randomize size slightly for organic feel
-      const sizeVar = 0.8 + Math.random() * 0.4; // 80-120% of base size
-      leaf.style.transform = `scale(${sizeVar}) rotate(${Math.random() * 360}deg)`;
-      
-      // Add event listeners
       leaf.addEventListener('click', this.handleLeafClick);
       leaf.addEventListener('mouseenter', this.handleLeafHover);
       leaf.addEventListener('mouseleave', this.handleLeafLeave);
@@ -339,23 +366,20 @@ class ResonanceGarden {
     });
   }
   
-  // Create preview element for hover
   createPreviewElement() {
     this.previewEl = document.createElement('div');
     this.previewEl.className = 'note-preview';
     document.body.appendChild(this.previewEl);
   }
   
-  // Handle leaf click - navigate to note
   handleLeafClick(e) {
     const leaf = e.currentTarget;
     const path = leaf.dataset.path;
     if (path) {
-      window.location.href = `/${path.replace(/\.md$/, '')}`;
+      window.location.href = '/' + path.replace(/\.md$/, '');
     }
   }
   
-  // Handle leaf hover - show preview
   handleLeafHover(e) {
     const leaf = e.currentTarget;
     const noteId = parseInt(leaf.dataset.noteId);
@@ -363,97 +387,39 @@ class ResonanceGarden {
     
     if (!note) return;
     
-    // Position preview
     const rect = leaf.getBoundingClientRect();
-    this.previewEl.style.left = `${rect.left + rect.width + 10}px`;
-    this.previewEl.style.top = `${rect.top}px`;
+    this.previewEl.style.left = (rect.left + rect.width + 10) + 'px';
+    this.previewEl.style.top = rect.top + 'px';
     
-    // Update preview content
-    this.previewEl.innerHTML = `
-      <h3>${note.title}</h3>
-      <p>${note.description || 'No description available.'}</p>
-      <p class="tags">${note.tags?.map(tag => `<span class="tag">#${tag}</span>`).join(' ') || ''}</p>
-    `;
+    this.previewEl.innerHTML = '<h3>' + note.title + '</h3><p>' + (note.description || 'No description available.') + '</p><p class="tags">' + (note.tags ? note.tags.map(tag => '<span class="tag">#' + tag + '</span>').join(' ') : '') + '</p>';
     
-    // Show preview
     this.previewEl.classList.add('visible');
     
-    // Adjust position if off-screen
     const previewRect = this.previewEl.getBoundingClientRect();
     if (previewRect.right > window.innerWidth) {
-      this.previewEl.style.left = `${rect.left - previewRect.width - 10}px`;
+      this.previewEl.style.left = (rect.left - previewRect.width - 10) + 'px';
     }
     if (previewRect.bottom > window.innerHeight) {
-      this.previewEl.style.top = `${rect.top - (previewRect.bottom - window.innerHeight)}px`;
+      this.previewEl.style.top = (rect.top - (previewRect.bottom - window.innerHeight)) + 'px';
     }
   }
   
-  // Handle leaf mouseleave - hide preview
   handleLeafLeave() {
     this.previewEl.classList.remove('visible');
   }
   
-  // Handle window resize
   handleResize() {
     if (this.isInitialized) {
       this.renderGarden();
     }
   }
-  
-  // Determine which leaf image to use based on note properties
-  getLeafImageIndex(note) {
-    // Map folders to specific image sets
-    const folderImageMap = {
-      'Conversations': [1, 2, 3], // Fabric scraps
-      'Insights': [4, 5, 6],      // Leaves
-      'Resources': [7, 8, 9],      // Paper fragments
-      'The Final Participation Project': [10, 11, 12] // Specialized elements
-    };
-    
-    // Map tags to specific images
-    const tagImageMap = {
-      'thestrangebirds': [13, 14],
-      'captainsimple': [15],
-      'ai-collaboration': [16, 17],
-      'knowing-field': [18, 19],
-      'backstory': [20, 21]
-    };
-    
-    // Check if note has a special tag that determines image
-    if (note.tags && note.tags.length > 0) {
-      for (const tag of note.tags) {
-        if (tagImageMap[tag]) {
-          const images = tagImageMap[tag];
-          return images[Math.floor(Math.random() * images.length)];
-        }
-      }
-    }
-    
-    // Otherwise use folder-based image
-    if (folderImageMap[note.folder]) {
-      const images = folderImageMap[note.folder];
-      return images[Math.floor(Math.random() * images.length)];
-    }
-    
-    // Default to generic images (1-3) if no matches
-    return Math.floor(Math.random() * 3) + 1;
-  }
 }
 
-// Initialize garden when the page is loaded
+// Initialize garden when page loads
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🌍 DOM loaded, looking for garden...');
-  // Only initialize on pages with a garden container
   const gardenContainer = document.querySelector('.garden-container');
   if (gardenContainer) {
-    console.log('🌱 Starting garden initialization...');
     new ResonanceGarden();
-  } else {
-    console.log('📄 No garden container found on this page');
   }
 });
-
-// Export for use in Quartz
-export default function() {
-  // This will be called by Quartz, initialization is handled by the DOMContentLoaded event
-}
+</script>

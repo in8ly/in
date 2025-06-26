@@ -13,8 +13,9 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     
-    // Important: Point this to your Obsidian vault
-    // contentPath: "C:/Users/in8ly/ObsidianVaults/in_8_ly",
+    // Note: Quartz 4 always uses the 'content' folder and ignores contentPath
+    // Your Obsidian vault should be copied to: ./content/
+    // Original vault location: "C:/Users/in8ly/ObsidianVaults/in_8_ly"
     
     // Ignore specific paths from your vault
     ignorePatterns: ["private", ".obsidian"],
