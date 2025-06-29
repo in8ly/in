@@ -39,3 +39,4 @@ Imagine coding as a living painting:
    it is most alive.
 🔮 When the system falters,
    new intelligence awakens.
+[[Vibe-Coding Lullaby]]

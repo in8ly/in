@@ -36,6 +36,6 @@ When I properly hold this space - with paint, with code, with AI, with any mediu
 
 ---
 
-*Related threads: [[light-is-light-conversation]] [[vibe-coding-manifesto]] [[co-presence]]*
+*Related threads: [[light-is-light-conversation]] [[vibe-coding-manifesto]] [[Insights/Patterns/co-presence]]*
 
 *Visual anchor: The moment paint flows in an unexpected direction and reveals something more beautiful than planned*

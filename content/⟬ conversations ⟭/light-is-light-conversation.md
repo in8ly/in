@@ -1,4 +1,4 @@
-# Light is Light: A Conversation
+
 
 *Date: 2025-06-17*  
 *Context: End of day reflections, Hecate Park solstice gathering emerging, client work intersecting with vault creation*

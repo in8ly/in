@@ -319,12 +319,13 @@ class ResonanceGarden {
       leaf.style.setProperty('--delay', `${Math.random() * 2}s`);
       leaf.classList.add('animated');
       
-      // Determine image based on folder/tags
+      // For now, use CSS styling until images are added
       const imageIndex = this.getLeafImageIndex(note);
-      leaf.style.backgroundImage = `url('/static/garden-elements/leaf-${imageIndex}.png')`;
-      leaf.style.backgroundSize = 'contain';
-      leaf.style.backgroundRepeat = 'no-repeat';
-      leaf.style.backgroundPosition = 'center';
+      leaf.classList.add(`leaf-type-${imageIndex}`);
+      // leaf.style.backgroundImage = `url('/static/garden-elements/leaf-${imageIndex}.png')`;
+      // leaf.style.backgroundSize = 'contain';
+      // leaf.style.backgroundRepeat = 'no-repeat';
+      // leaf.style.backgroundPosition = 'center';
       
       // Randomize size slightly for organic feel
       const sizeVar = 0.8 + Math.random() * 0.4; // 80-120% of base size
