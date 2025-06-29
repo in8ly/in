@@ -1,18 +1,21 @@
 ---
 title: "Resonance Intelligence Garden"
-description: "A living visualization of co-creative knowledge"
 ---
 
-# Welcome to the in_8_ly Space
+# Welcome to the Resonance Intelligence Garden 🌱
 
-This is a resonance garden where notes breathe and connections grow organically. Each element represents a note in the vault, connected by threads of meaning and resonance.
+This is your digital garden - a space where ideas grow, connect, and evolve. Each note represents a leaf in this garden, interconnected through links and shared concepts.
 
-<div class="garden-container"></div>
+## Recent Notes
+- [[project-without-a-plan]]
+- [[C.D.Good]]
+- [[Vibe-Coding Lullaby]]
 
-## Navigate the Garden
+## Explore
+- Browse the **Insights** for deeper thoughts
+- Visit the **Legendarium** for stories and concepts  
+- Check **Resources** for useful materials
+- Discover **The Final Participation Project**
 
-- **Hover** over elements to see note previews
-- **Click** elements to navigate to notes  
-- **Watch** as connections form between related ideas
-
-The garden grows as new notes are added, creating a living map of emerging intelligence and co-creation.
+---
+*This garden grows through your thoughts and connections. Every edit in Obsidian will automatically update here.*
